@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.wanandroid.fragment.HomeFragment;
+import com.example.wanandroid.fragment.SettingFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -27,16 +29,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
-
-
     }
 
     private void initData() {
         fragments.add(HomeFragment.newInstance("首页"));
-        fragments.add(HomeFragment.newInstance("广场"));
-        fragments.add(HomeFragment.newInstance("公众号"));
-        fragments.add(HomeFragment.newInstance("体系"));
-        fragments.add(HomeFragment.newInstance("项目"));
+        fragments.add(SettingFragment.newInstance("广场"));
+        fragments.add(SettingFragment.newInstance("公众号"));
+        fragments.add(SettingFragment.newInstance("体系"));
+        fragments.add(SettingFragment.newInstance("项目"));
         tab_titles = new String[]{"首页", "广场", "公众号","体系","项目"};
         tab_imgs=new int[]{R.drawable.ic_home_black_24dp,R.drawable.ic_square_black_24dp,
                 R.drawable.ic_wechat_black_24dp,R.drawable.ic_apps_black_24dp,R.drawable.ic_project_black_24dp};

@@ -1,4 +1,4 @@
-package com.example.wanandroid;
+package com.example.wanandroid.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +10,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class HomeFragment extends Fragment {
+import com.example.wanandroid.R;
+
+public class SettingFragment extends Fragment {
 
     private final String mText;
 
-    private HomeFragment(String text){
+    private SettingFragment(String text){
         this.mText = text;
     }
 
-    public static HomeFragment newInstance(String text){
-        return new HomeFragment(text);
+    public static SettingFragment newInstance(String text){
+        return new SettingFragment(text);
     }
     @Nullable
     @Override
