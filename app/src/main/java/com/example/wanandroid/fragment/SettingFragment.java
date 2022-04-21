@@ -31,7 +31,6 @@ public class SettingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        TextView textView = view.findViewById(R.id.home_fragment_text);
-        textView.setText(mText);
+
     }
 }

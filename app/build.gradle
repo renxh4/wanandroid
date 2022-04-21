@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
 }
+apply plugin: 'kotlin-android'
 
 android {
     compileSdk 31
@@ -40,7 +41,11 @@ dependencies {
     implementation 'com.squareup.okio:okio:1.17.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 
-
+}
+repositories {
+    mavenCentral()
 }
