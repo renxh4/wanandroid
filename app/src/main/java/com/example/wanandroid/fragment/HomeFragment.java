@@ -20,9 +20,14 @@ import com.example.wanandroid.Utils;
 import com.example.wanandroid.adapter.ArticleAdapter;
 import com.example.wanandroid.adapter.SpaceItemDecoration;
 import com.example.wanandroid.bean.ArticleBean;
+import com.example.wanandroid.bean.ArticleData;
+import com.example.wanandroid.bean.BannerBean;
 import com.example.wanandroid.net.Api;
 import com.example.wanandroid.net.OkhttpManager;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -69,12 +74,41 @@ public class HomeFragment extends Fragment {
             @Override
             public void success(String json) {
                 ArticleBean articleBean = new Gson().fromJson(json, ArticleBean.class);
+                List<ArticleBean.DataDTO.DatasDTO> datas = articleBean.getData().getDatas();
+                ArrayList<ArticleData> articleDatas = new ArrayList<>();
+                for (ArticleBean.DataDTO.DatasDTO datasDTO : datas) {
+                    ArticleData articleData = new ArticleData();
+                    articleData.articleData = datasDTO;
+                    articleDatas.add(articleData);
+                }
+                articleAdapter.setData(articleDatas);
+                getBanner();
+            }
+
+            @Override
+            public void fail(String msg) {
+
+            }
+        });
+
+    }
+
+    private void getBanner() {
+        OkhttpManager.INSTANCE.get(Api.getBanner, new OkhttpManager.CallBack() {
+            @Override
+            public void success(String json) {
+                BannerBean bannerBean = new Gson().fromJson(json, BannerBean.class);
+                List<BannerBean.DataDTO> data = bannerBean.getData();
+                ArticleData articleData = new ArticleData();
+                articleData.bannerData = data;
+                articleAdapter.setDataFirst(articleData);
                 Utils.executeOnMainThread(new Runnable() {
                     @Override
                     public void run() {
-                        articleAdapter.setData(articleBean.getData().getDatas());
+                        articleAdapter.notifyDataSetChanged();
                     }
                 });
+
             }
 
             @Override
