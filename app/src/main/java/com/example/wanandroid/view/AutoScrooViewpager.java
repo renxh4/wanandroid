@@ -1,4 +1,4 @@
-package com.example.wanandroid;
+package com.example.wanandroid.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

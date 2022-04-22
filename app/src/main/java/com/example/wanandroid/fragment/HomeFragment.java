@@ -5,15 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.OrientationHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.wanandroid.R;
 import com.example.wanandroid.Utils;
@@ -33,6 +32,10 @@ public class HomeFragment extends Fragment {
 
     private final String mText;
     private ArticleAdapter articleAdapter;
+    private boolean needRefresh;
+    private int mCurrenPagerCount;
+    private int pageCount;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private HomeFragment(String text) {
         this.mText = text;
@@ -55,6 +58,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void initView(View view) {
+        swipeRefreshLayout = view.findViewById(R.id.top_refresh);
         RecyclerView recyclerView = view.findViewById(R.id.recycle);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -67,13 +71,71 @@ public class HomeFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(getContext()));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //recyclerView.canScrollVertically(1)的值表示是否能向上滚动，false表示已经滚动到底部
+        //recyclerView.canScrollVertically(-1)的值表示是否能向下滚动，false表示已经滚动到顶部
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1)) {
+                    Log.d("mmm", "到达了底部");
+                    refreshData();
+                }
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Log.d("mmm", "top 刷新");
+                articleAdapter.clear();
+                initData();
+            }
+        });
     }
+
+    private void refreshData() {
+        if (needRefresh) {
+            String getArticle = Api.BASE + "/article/list/%s/json";
+            if (++mCurrenPagerCount < pageCount) {
+                String format = String.format(getArticle, mCurrenPagerCount);
+                Log.d("mmmurl", format);
+                OkhttpManager.INSTANCE.get(format, new OkhttpManager.CallBack() {
+                    @Override
+                    public void success(String json) {
+                        ArticleBean articleBean = new Gson().fromJson(json, ArticleBean.class);
+                        List<ArticleBean.DataDTO.DatasDTO> datas = articleBean.getData().getDatas();
+                        ArrayList<ArticleData> articleDatas = new ArrayList<>();
+                        for (ArticleBean.DataDTO.DatasDTO datasDTO : datas) {
+                            ArticleData articleData = new ArticleData();
+                            articleData.articleData = datasDTO;
+                            articleDatas.add(articleData);
+                        }
+                        articleAdapter.setData(articleDatas);
+                        Utils.executeOnMainThread(() -> {
+                            articleAdapter.notifyDataSetChanged();
+                        });
+
+                    }
+
+                    @Override
+                    public void fail(String msg) {
+
+                    }
+                });
+            }
+
+        }
+    }
+
 
     private void initData() {
         OkhttpManager.INSTANCE.get(Api.getArticle, new OkhttpManager.CallBack() {
             @Override
             public void success(String json) {
                 ArticleBean articleBean = new Gson().fromJson(json, ArticleBean.class);
+                pageCount = articleBean.getData().getPageCount();
                 List<ArticleBean.DataDTO.DatasDTO> datas = articleBean.getData().getDatas();
                 ArrayList<ArticleData> articleDatas = new ArrayList<>();
                 for (ArticleBean.DataDTO.DatasDTO datasDTO : datas) {
@@ -90,7 +152,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
     }
 
     private void getBanner() {
@@ -106,6 +167,9 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void run() {
                         articleAdapter.notifyDataSetChanged();
+                        needRefresh = true;
+                        mCurrenPagerCount = 0;
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
 

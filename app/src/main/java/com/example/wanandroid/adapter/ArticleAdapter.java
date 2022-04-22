@@ -27,6 +27,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     private int BANNER = 0;
     private int NORMALE = 1;
+    private int FOOT = 2;
 
     public ArticleAdapter(Context context) {
         this.mContext = context;
@@ -43,8 +44,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (viewType == BANNER) {
             View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_home_banner, parent, false);
             holder = new BannerViewHolder(inflate);
+        } else if (viewType == FOOT) {
+            View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_home_foot, parent, false);
+            holder = new FootViewHolder(inflate);
         } else {
-            View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_home, parent, false);
+            View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_home_foot, parent, false);
             holder = new ArticleViewHolder(inflate);
         }
 
@@ -55,10 +59,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int itemViewType = getItemViewType(position);
         if (itemViewType == BANNER) {
-            BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
-            ArticleData articleData = mDatas.get(position);
-            List<BannerBean.DataDTO> bannerData = articleData.bannerData;
-            initBanner(bannerData, bannerViewHolder);
+            if (mDatas != null && mDatas.size() > 0) {
+                BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+                ArticleData articleData = mDatas.get(position);
+                List<BannerBean.DataDTO> bannerData = articleData.bannerData;
+                initBanner(bannerData, bannerViewHolder);
+            }
         } else if (itemViewType == NORMALE) {
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) holder;
             ArticleData articleData = mDatas.get(position);
@@ -71,6 +77,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private void initBanner(List<BannerBean.DataDTO> bannerData, BannerViewHolder bannerViewHolder) {
+        if (bannerData==null)return;
         BannerAdapter bannerAdapter = new BannerAdapter(bannerData, mContext, bannerViewHolder.viewPager);
         bannerViewHolder.viewPager.setAdapter(bannerAdapter);
         bannerViewHolder.title.setText(bannerData.get(0).getTitle());
@@ -103,13 +110,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mDatas == null ? 0 : mDatas.size();
+        return mDatas == null ? 0 : mDatas.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
         if (position == 0) {
             return BANNER;
+        } else if (position == mDatas.size()) {
+            return FOOT;
         } else {
             return NORMALE;
         }
@@ -121,6 +130,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void setDataFirst(ArticleData data) {
         mDatas.add(0, data);
+    }
+
+    public void clear() {
+        if (mDatas!=null){
+            mDatas.clear();
+        }
     }
 
     static class ArticleViewHolder extends RecyclerView.ViewHolder {
@@ -149,6 +164,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(itemView);
             viewPager = itemView.findViewById(R.id.banner);
             title = itemView.findViewById(R.id.banner_title);
+        }
+    }
+
+    static class FootViewHolder extends RecyclerView.ViewHolder {
+
+        public FootViewHolder(@NonNull View itemView) {
+            super(itemView);
         }
     }
 
