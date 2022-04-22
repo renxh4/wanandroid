@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="230dp">
 
-    <androidx.viewpager.widget.ViewPager
+    <com.example.wanandroid.AutoScrooViewpager
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_230"

@@ -70,4 +70,8 @@ public class BannerAdapter extends PagerAdapter {
         return imageView;
     }
 
+    public void detach() {
+        mHander.removeCallbacksAndMessages(null);
+    }
+
 }
