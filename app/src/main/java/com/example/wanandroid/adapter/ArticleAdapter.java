@@ -71,9 +71,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     private void initBanner(List<BannerBean.DataDTO> bannerData, BannerViewHolder bannerViewHolder) {
-        BannerAdapter bannerAdapter = new BannerAdapter(bannerData, mContext);
+        BannerAdapter bannerAdapter = new BannerAdapter(bannerData, mContext, bannerViewHolder.viewPager);
         bannerViewHolder.viewPager.setAdapter(bannerAdapter);
-
+        bannerViewHolder.title.setText(bannerData.get(0).getTitle());
         bannerViewHolder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -87,7 +87,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             @Override
             public void onPageSelected(int position) {
                 //页面跳转完后得到调用，arg0是你当前选中的页面的Position
-                bannerViewHolder.title.setText(bannerData.get(position).getTitle());
+                int pos = position % bannerData.size();
+                bannerViewHolder.title.setText(bannerData.get(pos).getTitle());
+                bannerAdapter.mCurrentPos = position;
             }
 
             @Override
