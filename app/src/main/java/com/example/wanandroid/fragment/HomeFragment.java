@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.wanandroid.R;
 import com.example.wanandroid.Utils;
+import com.example.wanandroid.activity.WebviewActivity;
 import com.example.wanandroid.adapter.ArticleAdapter;
 import com.example.wanandroid.adapter.SpaceItemDecoration;
 import com.example.wanandroid.bean.ArticleBean;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment {
     private int mCurrenPagerCount;
     private int pageCount;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private RecyclerView recyclerView;
 
     private HomeFragment(String text) {
         this.mText = text;
@@ -59,7 +61,7 @@ public class HomeFragment extends Fragment {
 
     private void initView(View view) {
         swipeRefreshLayout = view.findViewById(R.id.top_refresh);
-        RecyclerView recyclerView = view.findViewById(R.id.recycle);
+        recyclerView = view.findViewById(R.id.recycle);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         //设置布局管理器
@@ -71,7 +73,10 @@ public class HomeFragment extends Fragment {
         recyclerView.addItemDecoration(new SpaceItemDecoration(getContext()));
         //设置增加或删除条目的动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        initEvent();
+    }
 
+    private void initEvent() {
         //recyclerView.canScrollVertically(1)的值表示是否能向上滚动，false表示已经滚动到底部
         //recyclerView.canScrollVertically(-1)的值表示是否能向下滚动，false表示已经滚动到顶部
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -91,6 +96,15 @@ public class HomeFragment extends Fragment {
                 Log.d("mmm", "top 刷新");
                 articleAdapter.clear();
                 initData();
+            }
+        });
+
+        articleAdapter.setItemClick(new ArticleAdapter.ItemClick() {
+            @Override
+            public void click(String url) {
+                Log.d("mmmurl11", url);
+                WebviewActivity.start(getContext(),url);
+
             }
         });
     }

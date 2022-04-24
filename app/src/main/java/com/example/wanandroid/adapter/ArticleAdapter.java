@@ -28,6 +28,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int BANNER = 0;
     private int NORMALE = 1;
     private int FOOT = 2;
+    private ItemClick mItemClick;
 
     public ArticleAdapter(Context context) {
         this.mContext = context;
@@ -73,11 +74,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             articleViewHolder.article_chapterName.setText(datasDTO.getSuperChapterName() + "/" + datasDTO.getChapterName());
             articleViewHolder.article_data.setText(datasDTO.getNiceDate());
             articleViewHolder.article_title.setText(datasDTO.getTitle());
+
+            articleViewHolder.itemView.setOnClickListener(v -> {
+                if (mItemClick!=null){
+                    mItemClick.click(datasDTO.getLink());
+                }
+            });
         }
     }
 
     private void initBanner(List<BannerBean.DataDTO> bannerData, BannerViewHolder bannerViewHolder) {
-        if (bannerData==null)return;
+        if (bannerData == null) return;
         BannerAdapter bannerAdapter = new BannerAdapter(bannerData, mContext, bannerViewHolder.viewPager);
         bannerViewHolder.viewPager.setAdapter(bannerAdapter);
         bannerViewHolder.title.setText(bannerData.get(0).getTitle());
@@ -133,7 +140,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     public void clear() {
-        if (mDatas!=null){
+        if (mDatas != null) {
             mDatas.clear();
         }
     }
@@ -152,6 +159,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             article_data = itemView.findViewById(R.id.tv_article_date);
             article_title = itemView.findViewById(R.id.tv_article_title);
             article_chapterName = itemView.findViewById(R.id.tv_article_chapterName);
+
         }
     }
 
@@ -172,6 +180,15 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public FootViewHolder(@NonNull View itemView) {
             super(itemView);
         }
+    }
+
+
+    public void setItemClick(ItemClick itemClick) {
+        this.mItemClick = itemClick;
+    }
+
+    public interface ItemClick {
+        void click(String url);
     }
 
 }
