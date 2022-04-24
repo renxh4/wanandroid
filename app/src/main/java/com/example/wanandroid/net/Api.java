@@ -6,4 +6,8 @@ public interface Api {
 
     String getArticle = BASE + "/article/list/0/json";
     String getBanner = BASE + "/banner/json";
+
+    String getTop = BASE + "/article/top/json";
+
+
 }

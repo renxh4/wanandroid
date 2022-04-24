@@ -18,6 +18,7 @@ import com.example.wanandroid.R;
 import com.example.wanandroid.Utils;
 import com.example.wanandroid.activity.WebviewActivity;
 import com.example.wanandroid.adapter.ArticleAdapter;
+import com.example.wanandroid.adapter.ArticleTopBean;
 import com.example.wanandroid.adapter.SpaceItemDecoration;
 import com.example.wanandroid.bean.ArticleBean;
 import com.example.wanandroid.bean.ArticleData;
@@ -95,6 +96,7 @@ public class HomeFragment extends Fragment {
             public void onRefresh() {
                 Log.d("mmm", "top 刷新");
                 articleAdapter.clear();
+                needRefresh=false;
                 initData();
             }
         });
@@ -145,6 +147,34 @@ public class HomeFragment extends Fragment {
 
 
     private void initData() {
+        getTopArticle();
+    }
+
+    private void getTopArticle() {
+        OkhttpManager.INSTANCE.get(Api.getTop, new OkhttpManager.CallBack() {
+            @Override
+            public void success(String json) {
+                ArticleTopBean articleBean = new Gson().fromJson(json, ArticleTopBean.class);
+                List<ArticleBean.DataDTO.DatasDTO> data = articleBean.getData();
+                ArrayList<ArticleData> articleDatas = new ArrayList<>();
+                for (ArticleBean.DataDTO.DatasDTO datasDTO : data) {
+                    datasDTO.top="1";
+                    ArticleData articleData = new ArticleData();
+                    articleData.articleData = datasDTO;
+                    articleDatas.add(articleData);
+                }
+                articleAdapter.setData(articleDatas);
+                getArticle();
+            }
+
+            @Override
+            public void fail(String msg) {
+
+            }
+        });
+    }
+
+    private void getArticle() {
         OkhttpManager.INSTANCE.get(Api.getArticle, new OkhttpManager.CallBack() {
             @Override
             public void success(String json) {

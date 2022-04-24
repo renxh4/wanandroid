@@ -1,6 +1,7 @@
 package com.example.wanandroid.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.example.wanandroid.R;
 import com.example.wanandroid.bean.ArticleBean;
 import com.example.wanandroid.bean.ArticleData;
@@ -70,10 +72,38 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) holder;
             ArticleData articleData = mDatas.get(position);
             ArticleBean.DataDTO.DatasDTO datasDTO = articleData.articleData;
-            articleViewHolder.article_author.setText(datasDTO.getShareUser());
+            String username =  datasDTO.getAuthor().isEmpty()?datasDTO.getShareUser():datasDTO.getAuthor();
+            articleViewHolder.article_author.setText(username);
             articleViewHolder.article_chapterName.setText(datasDTO.getSuperChapterName() + "/" + datasDTO.getChapterName());
             articleViewHolder.article_data.setText(datasDTO.getNiceDate());
-            articleViewHolder.article_title.setText(datasDTO.getTitle());
+            articleViewHolder.article_title.setText(Html.fromHtml(datasDTO.getTitle()));
+
+            if (datasDTO.getEnvelopePic().isEmpty()){
+                articleViewHolder.article_thumbnail.setVisibility(View.GONE);
+            }else {
+                articleViewHolder.article_thumbnail.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(datasDTO.getEnvelopePic()).centerCrop().into(articleViewHolder.article_thumbnail);
+            }
+
+            if (datasDTO.isFresh()){
+                articleViewHolder.article_fresh.setVisibility(View.VISIBLE);
+            }else {
+                articleViewHolder.article_fresh.setVisibility(View.GONE);
+            }
+
+            if (datasDTO.getTags().size()>0){
+                articleViewHolder.article_tag.setVisibility(View.VISIBLE);
+                ArticleBean.DataDTO.Tag tag = datasDTO.getTags().get(0);
+                articleViewHolder.article_tag.setText(tag.name);
+            }else {
+                articleViewHolder.article_tag.setVisibility(View.GONE);
+            }
+
+            if (datasDTO.top!=null&&datasDTO.top.equals("1")){
+                articleViewHolder.article_top.setVisibility(View.VISIBLE);
+            }else {
+                articleViewHolder.article_top.setVisibility(View.GONE);
+            }
 
             articleViewHolder.itemView.setOnClickListener(v -> {
                 if (mItemClick!=null){
@@ -151,6 +181,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private final TextView article_data;
         private final TextView article_title;
         private final TextView article_chapterName;
+        private final ImageView article_thumbnail;
+        private final TextView article_fresh;
+        private final TextView article_top;
+        private final TextView article_tag;
 
         public ArticleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -159,7 +193,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             article_data = itemView.findViewById(R.id.tv_article_date);
             article_title = itemView.findViewById(R.id.tv_article_title);
             article_chapterName = itemView.findViewById(R.id.tv_article_chapterName);
-
+            article_thumbnail = itemView.findViewById(R.id.iv_article_thumbnail);
+            article_fresh = itemView.findViewById(R.id.tv_article_fresh);
+            article_top = itemView.findViewById(R.id.tv_article_top);
+            article_tag = itemView.findViewById(R.id.tv_article_tag);
         }
     }
 

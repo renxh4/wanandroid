@@ -125,12 +125,13 @@ public class ArticleBean {
             private String shareUser;
             private int superChapterId;
             private String superChapterName;
-            private List<?> tags;
+            private List<Tag> tags;
             private String title;
             private int type;
             private int userId;
             private int visible;
             private int zan;
+            public String top;
 
             public String getApkLink() {
                 return apkLink;
@@ -348,11 +349,11 @@ public class ArticleBean {
                 this.superChapterName = superChapterName;
             }
 
-            public List<?> getTags() {
+            public List<Tag> getTags() {
                 return tags;
             }
 
-            public void setTags(List<?> tags) {
+            public void setTags(List<Tag> tags) {
                 this.tags = tags;
             }
 
@@ -395,6 +396,10 @@ public class ArticleBean {
             public void setZan(int zan) {
                 this.zan = zan;
             }
+        }
+
+       public static class Tag {
+            public String name;
         }
     }
 }
