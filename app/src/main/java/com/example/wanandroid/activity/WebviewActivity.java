@@ -2,25 +2,20 @@ package com.example.wanandroid.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.Animator;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.example.wanandroid.R;
 
@@ -31,6 +26,7 @@ public class WebviewActivity extends AppCompatActivity {
     public final String TAG = "mmmWebviewActivity";
     public static final String URL = "url";
     private WebView webView;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +45,11 @@ public class WebviewActivity extends AppCompatActivity {
 
     private void initView() {
         webView = findViewById(R.id.webview);
+        progressBar = findViewById(R.id.progress);
+        initWebview();
+    }
 
+    private void initWebview() {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true); // 启用javascript
         settings.setDomStorageEnabled(true); // 支持HTML5中的一些控件标签
@@ -80,9 +80,8 @@ public class WebviewActivity extends AppCompatActivity {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int progress) { // 显示加载进度，自选
-//                TextView txtProgress = findViewById(R.id.txtProgress);
-//                txtProgress.setText(String.format(Locale.CHINA, "%d%%", progress));
-//                txtProgress.setVisibility((progress > 0 && progress < 100) ? View.VISIBLE : View.GONE);
+                progressBar.setProgress(progress);
+                progressBar.setVisibility((progress > 0 && progress < 100) ? View.VISIBLE : View.GONE);
             }
 
             @Override
@@ -94,8 +93,8 @@ public class WebviewActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Log.d(TAG,"开始加载"+url);
-                if (url.startsWith("jianshu")){
+                Log.d(TAG, "开始加载" + url);
+                if (url.startsWith("jianshu")) {
                     return true;
                 }
                 if (url.startsWith("http://") || url.startsWith("https://")) { // 4.0以上必须要加
@@ -119,14 +118,14 @@ public class WebviewActivity extends AppCompatActivity {
         });
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack();
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+//            webView.goBack();
+//            return true;
+//        }
+//
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 
     private void initData() {
