@@ -19,6 +19,7 @@ import com.example.wanandroid.Utils;
 import com.example.wanandroid.activity.WebviewActivity;
 import com.example.wanandroid.adapter.ArticleAdapter;
 import com.example.wanandroid.adapter.ArticleTopBean;
+import com.example.wanandroid.adapter.CustomLinearLayoutManager;
 import com.example.wanandroid.adapter.SpaceItemDecoration;
 import com.example.wanandroid.bean.ArticleBean;
 import com.example.wanandroid.bean.ArticleData;
@@ -64,7 +65,7 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.top_refresh);
         recyclerView = view.findViewById(R.id.recycle);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        CustomLinearLayoutManager layoutManager = new CustomLinearLayoutManager(getContext());
         //设置布局管理器
         recyclerView.setLayoutManager(layoutManager);
         articleAdapter = new ArticleAdapter(getContext());
