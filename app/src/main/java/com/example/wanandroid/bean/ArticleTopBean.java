@@ -1,4 +1,4 @@
-package com.example.wanandroid.adapter;
+package com.example.wanandroid.bean;
 
 import com.example.wanandroid.bean.ArticleBean;
 

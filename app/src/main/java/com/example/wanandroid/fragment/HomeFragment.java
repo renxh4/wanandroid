@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -18,7 +17,7 @@ import com.example.wanandroid.R;
 import com.example.wanandroid.Utils;
 import com.example.wanandroid.activity.WebviewActivity;
 import com.example.wanandroid.adapter.ArticleAdapter;
-import com.example.wanandroid.adapter.ArticleTopBean;
+import com.example.wanandroid.bean.ArticleTopBean;
 import com.example.wanandroid.adapter.CustomLinearLayoutManager;
 import com.example.wanandroid.adapter.SpaceItemDecoration;
 import com.example.wanandroid.bean.ArticleBean;
