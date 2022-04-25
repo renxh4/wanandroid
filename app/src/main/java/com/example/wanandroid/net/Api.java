@@ -9,5 +9,7 @@ public interface Api {
 
     String getTop = BASE + "/article/top/json";
 
+    String getQuestion = BASE + "/wenda/list/%s/json";
+
 
 }

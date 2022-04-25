@@ -1,61 +1,93 @@
 package com.example.wanandroid.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
 
 import com.example.wanandroid.R;
-import com.example.wanandroid.adapter.CustomLinearLayoutManager;
+import com.example.wanandroid.Utils;
+import com.example.wanandroid.activity.WebviewActivity;
 import com.example.wanandroid.adapter.QuestionAdapter;
-import com.example.wanandroid.adapter.SpaceItemDecoration;
+import com.example.wanandroid.base.BaseAdapter;
+import com.example.wanandroid.base.BaseFragment;
+import com.example.wanandroid.bean.QuestionBean;
+import com.example.wanandroid.net.Api;
+import com.example.wanandroid.net.OkhttpManager;
+import com.google.gson.Gson;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class QuestionFragment extends Fragment {
+public class QuestionFragment extends BaseFragment {
 
-
-    private RecyclerView recyclerView;
+    private QuestionAdapter questionAdapter;
+    private int page = 1;
 
     public static QuestionFragment newInstance() {
         return new QuestionFragment();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.home_fragmet, null);
+    public void onCreate() {
+        questionAdapter = new QuestionAdapter(getContext());
+        initData(false, true);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initView(view);
+    public void itemClick(String url) {
+        WebviewActivity.start(getContext(),url);
     }
 
-    private void initView(View view) {
-        recyclerView = view.findViewById(R.id.recycle);
+    private void initData(boolean add, boolean refresh) {
+        if (add) {
+            page++;
+        }
+        if (refresh) {
+            questionAdapter.clear();
+            page = 1;
+        }
+        String url = String.format(Api.getQuestion, page);
+        OkhttpManager.INSTANCE.get(url, new OkhttpManager.CallBack() {
+            @Override
+            public void success(String json) {
+                QuestionBean questionBean = new Gson().fromJson(json, QuestionBean.class);
+                List<QuestionBean.DataDTO.DatasDTO> datas = questionBean.getData().getDatas();
+                questionAdapter.setData(datas);
+                Log.d("mmm",url+"///"+datas.size());
+                Utils.executeOnMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        questionAdapter.notifyDataSetChanged();
+                        setProgressStatus(false);
+                    }
+                });
 
-        CustomLinearLayoutManager layoutManager = new CustomLinearLayoutManager(getContext());
-        //设置布局管理器
-        recyclerView.setLayoutManager(layoutManager);
-        QuestionAdapter questionAdapter = new QuestionAdapter(getContext());
-        //设置Adapter
-        recyclerView.setAdapter(questionAdapter);
-        //设置分隔线
-        recyclerView.addItemDecoration(new SpaceItemDecoration(getContext()));
-        //设置增加或删除条目的动画
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            }
 
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("sdkald");
-        strings.add("weqwe");
-        questionAdapter.setData(strings);
+            @Override
+            public void fail(String msg) {
+
+            }
+        });
     }
+
+    @Override
+    public int getLayout() {
+        return R.layout.home_fragmet;
+    }
+
+    @Override
+    public BaseAdapter<QuestionBean.DataDTO.DatasDTO, QuestionAdapter.QuestionViewHolder> getAdapter() {
+        return questionAdapter;
+    }
+
+    @Override
+    public void topRefresh() {
+        initData(false, true);
+    }
+
+    @Override
+    public void bottomRefresh() {
+        initData(true, false);
+    }
+
 }

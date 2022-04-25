@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.wanandroid.R;
+import com.example.wanandroid.adapter.ArticleAdapter;
 import com.example.wanandroid.bean.ArticleData;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +21,10 @@ public abstract class BaseAdapter<T, VH extends BaseViewHolder> extends Recycler
 
     public final int NORMALE = 1;
     public final int FOOT = 2;
-    private final Context mContext;
+    public final Context mContext;
     private final ArrayList<T> mDatas;
     private final int mLayout;
+    public ArticleAdapter.ItemClick mItemClick;
 
     public BaseAdapter(Context context, int layout) {
         this.mContext = context;
@@ -50,7 +53,7 @@ public abstract class BaseAdapter<T, VH extends BaseViewHolder> extends Recycler
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int itemViewType = getItemViewType(position);
-        if (itemViewType==NORMALE){
+        if (itemViewType == NORMALE) {
             cover(holder, position, mDatas.get(position));
         }
     }
@@ -59,13 +62,16 @@ public abstract class BaseAdapter<T, VH extends BaseViewHolder> extends Recycler
 
     public abstract void cover(RecyclerView.ViewHolder holder, int position, T t);
 
+    public void clear() {
+        mDatas.clear();
+    }
 
     @Override
     public int getItemCount() {
         return mDatas.size() == 0 ? 0 : mDatas.size() + 1;
     }
 
-    public void setData(ArrayList<T> datas) {
+    public void setData(List<T> datas) {
         mDatas.addAll(datas);
     }
 
@@ -86,6 +92,7 @@ public abstract class BaseAdapter<T, VH extends BaseViewHolder> extends Recycler
         }
     }
 
+
     public abstract Class<VH> getViewHolderClass();
 
     public VH newInstance(Class<VH> tClass, View view) {
@@ -99,5 +106,14 @@ public abstract class BaseAdapter<T, VH extends BaseViewHolder> extends Recycler
             e.printStackTrace();
         }
         return (VH) p;
+    }
+
+
+    public void setItemClick(ArticleAdapter.ItemClick itemClick) {
+        this.mItemClick = itemClick;
+    }
+
+    public interface ItemClick {
+        void click(String url);
     }
 }
