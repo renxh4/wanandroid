@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.wanandroid.fragment.HomeFragment;
 import com.example.wanandroid.fragment.QuestionFragment;
 import com.example.wanandroid.fragment.SettingFragment;
+import com.example.wanandroid.fragment.WechatFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         fragments.add(HomeFragment.newInstance("首页"));
         fragments.add(QuestionFragment.newInstance());
-        fragments.add(SettingFragment.newInstance("公众号"));
+        fragments.add(WechatFragment.newInstance());
         fragments.add(SettingFragment.newInstance("体系"));
         fragments.add(SettingFragment.newInstance("项目"));
         tab_titles = new String[]{"首页", "问答", "公众号", "体系", "项目"};
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         mViewPager = findViewById(R.id.viewpager);
         mTabLayout = findViewById(R.id.tablayout);
+        mViewPager.setOffscreenPageLimit(5);
     }
 
     /**

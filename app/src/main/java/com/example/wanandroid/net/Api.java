@@ -11,5 +11,9 @@ public interface Api {
 
     String getQuestion = BASE + "/wenda/list/%s/json";
 
+    String getWechat = BASE + "/wxarticle/chapters/json";
+
+    String getWechatitem = BASE + "/wxarticle/list/%s/%s/json";
+
 
 }

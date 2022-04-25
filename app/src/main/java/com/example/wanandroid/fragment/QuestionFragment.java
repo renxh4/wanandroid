@@ -70,10 +70,6 @@ public class QuestionFragment extends BaseFragment {
         });
     }
 
-    @Override
-    public int getLayout() {
-        return R.layout.home_fragmet;
-    }
 
     @Override
     public BaseAdapter<QuestionBean.DataDTO.DatasDTO, QuestionAdapter.QuestionViewHolder> getAdapter() {

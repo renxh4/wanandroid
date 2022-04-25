@@ -30,7 +30,7 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(getLayout(), null);
+        return inflater.inflate(R.layout.home_fragmet, null);
     }
 
     @Override
@@ -43,15 +43,18 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    protected  void initAdapter(){
+    protected void initAdapter() {
         recyclerView.setAdapter(getAdapter());
-        getAdapter().setItemClick(new ArticleAdapter.ItemClick() {
-            @Override
-            public void click(String url) {
-                itemClick(url);
-            }
-        });
-    };
+        if (getAdapter() != null) {
+            getAdapter().setItemClick(new ArticleAdapter.ItemClick() {
+                @Override
+                public void click(String url) {
+                    itemClick(url);
+                }
+            });
+        }
+    }
+
 
     private void initView(View view) {
         recyclerView = view.findViewById(R.id.recycle);
@@ -91,11 +94,9 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    public void setProgressStatus(boolean refresh){
+    public void setProgressStatus(boolean refresh) {
         swipeRefreshLayout.setRefreshing(refresh);
     }
-
-    public abstract int getLayout();
 
     public abstract BaseAdapter getAdapter();
 
