@@ -72,41 +72,41 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ArticleViewHolder articleViewHolder = (ArticleViewHolder) holder;
             ArticleData articleData = mDatas.get(position);
             ArticleBean.DataDTO.DatasDTO datasDTO = articleData.articleData;
-            String username =  datasDTO.getAuthor().isEmpty()?datasDTO.getShareUser():datasDTO.getAuthor();
+            String username = datasDTO.getAuthor().isEmpty() ? datasDTO.getShareUser() : datasDTO.getAuthor();
             articleViewHolder.article_author.setText(username);
             articleViewHolder.article_chapterName.setText(datasDTO.getSuperChapterName() + "/" + datasDTO.getChapterName());
             articleViewHolder.article_data.setText(datasDTO.getNiceDate());
             articleViewHolder.article_title.setText(Html.fromHtml(datasDTO.getTitle()));
 
-            if (datasDTO.getEnvelopePic().isEmpty()){
+            if (datasDTO.getEnvelopePic().isEmpty()) {
                 articleViewHolder.article_thumbnail.setVisibility(View.GONE);
-            }else {
+            } else {
                 articleViewHolder.article_thumbnail.setVisibility(View.VISIBLE);
                 Glide.with(mContext).load(datasDTO.getEnvelopePic()).centerCrop().into(articleViewHolder.article_thumbnail);
             }
 
-            if (datasDTO.isFresh()){
+            if (datasDTO.isFresh()) {
                 articleViewHolder.article_fresh.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 articleViewHolder.article_fresh.setVisibility(View.GONE);
             }
 
-            if (datasDTO.getTags().size()>0){
+            if (datasDTO.getTags().size() > 0) {
                 articleViewHolder.article_tag.setVisibility(View.VISIBLE);
                 ArticleBean.DataDTO.Tag tag = datasDTO.getTags().get(0);
                 articleViewHolder.article_tag.setText(tag.name);
-            }else {
+            } else {
                 articleViewHolder.article_tag.setVisibility(View.GONE);
             }
 
-            if (datasDTO.top!=null&&datasDTO.top.equals("1")){
+            if (datasDTO.top != null && datasDTO.top.equals("1")) {
                 articleViewHolder.article_top.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 articleViewHolder.article_top.setVisibility(View.GONE);
             }
 
             articleViewHolder.itemView.setOnClickListener(v -> {
-                if (mItemClick!=null){
+                if (mItemClick != null) {
                     mItemClick.click(datasDTO.getLink());
                 }
             });
@@ -147,7 +147,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mDatas == null ? 0 : mDatas.size() + 1;
+        return mDatas.size() == 0 ? 0 : mDatas.size() + 1;
     }
 
     @Override
@@ -227,5 +227,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public interface ItemClick {
         void click(String url);
     }
+
 
 }

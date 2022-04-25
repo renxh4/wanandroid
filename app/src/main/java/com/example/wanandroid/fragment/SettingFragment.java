@@ -9,12 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wanandroid.R;
+import com.example.wanandroid.adapter.ArticleAdapter;
+import com.example.wanandroid.adapter.CustomLinearLayoutManager;
+import com.example.wanandroid.adapter.QuestionAdapter;
+import com.example.wanandroid.adapter.SpaceItemDecoration;
 
 public class SettingFragment extends Fragment {
 
     private final String mText;
+    private RecyclerView recyclerView;
 
     public SettingFragment(String text){
         this.mText = text;
@@ -31,6 +38,7 @@ public class SettingFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
     }
+
+
 }
