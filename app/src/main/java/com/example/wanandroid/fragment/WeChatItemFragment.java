@@ -30,7 +30,6 @@ public class WeChatItemFragment extends BaseFragment {
     public void onCreate() {
         weChatItemAdapter = new WeChatItemAdapter(getContext());
         initData(false, true);
-
     }
 
     private void initData(boolean add, boolean refresh) {
