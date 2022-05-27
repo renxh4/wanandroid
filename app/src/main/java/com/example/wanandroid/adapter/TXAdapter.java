@@ -36,9 +36,6 @@ public class TXAdapter extends  RecyclerView.Adapter{
         if (viewType == NORMALE) {
             View inflate = LayoutInflater.from(mContext).inflate(R.layout.tx_re_item, parent, false);
             return new TxViewHolder(inflate);
-        } else if (viewType == FOOT) {
-            View inflate = LayoutInflater.from(mContext).inflate(R.layout.item_home_foot, parent, false);
-            return new FootViewHolder(inflate);
         } else if (viewType ==TITLE){
             View inflate = LayoutInflater.from(mContext).inflate(R.layout.tx_re_item_title, parent, false);
             return new TitleViewHolder(inflate);
@@ -62,14 +59,12 @@ public class TXAdapter extends  RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
-        return mTxItemBeans.size()+1;
+        return mTxItemBeans.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == mTxItemBeans.size()) {
-            return FOOT;
-        } else if (!mTxItemBeans.get(position).children){
+       if (!mTxItemBeans.get(position).children){
             return TITLE;
         }else {
             return NORMALE;
@@ -90,13 +85,6 @@ public class TXAdapter extends  RecyclerView.Adapter{
             super(itemView);
 
             textView = itemView.findViewById(R.id.tx_item_text);
-        }
-    }
-
-    static class FootViewHolder extends RecyclerView.ViewHolder {
-
-        public FootViewHolder(@NonNull View itemView) {
-            super(itemView);
         }
     }
 
