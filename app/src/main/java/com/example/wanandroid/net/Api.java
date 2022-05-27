@@ -15,5 +15,7 @@ public interface Api {
 
     String getWechatitem = BASE + "/wxarticle/list/%s/%s/json";
 
+    String getTX = BASE + "/tree/json";
+
 
 }
