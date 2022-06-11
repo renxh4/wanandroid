@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.wanandroid">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -11,7 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wanandroid">
         <activity
+            android:name=".activity.VideoActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.WebviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.Webview2Activity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
@@ -23,7 +31,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
