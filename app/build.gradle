@@ -1,31 +1,19 @@
-plugins {
-    id 'com.android.application'
-}
+
+apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.ren.xh.plugin'
 
 
-boolean isReleaseBuildType(){
-    for(String s : gradle.startParameter.taskNames) {
-        if (s.contains("Release") | s.contains("release")) {
-            return true
-        }
-    }
-    return false
-}
 
-def isdebug = true
-
-task("isdebug"){
-    isdebug  = !isReleaseBuildType()
-    println("isdebug = "+ isdebug)
-}
 android {
-    compileSdk 31
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
+
 
     defaultConfig {
         applicationId "com.example.wanandroid"
-        minSdk 21
-        targetSdk 31
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -58,7 +46,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 
-
+    //项目三方库
     implementation 'com.squareup.okhttp3:okhttp:3.13.1'
     implementation 'com.squareup.okio:okio:1.17.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
@@ -67,11 +55,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
-    if (isdebug){
-        debugImplementation 'com.github.eleme.UETool:uetool:1.3.2'
-        debugImplementation 'com.github.eleme.UETool:uetool-base:1.3.2'
-        releaseImplementation 'com.github.eleme.UETool:uetool-no-op:1.3.2'
-    }
+    //ui验收工具
+    debugImplementation 'com.github.eleme.UETool:uetool:1.3.2'
+    debugImplementation 'com.github.eleme.UETool:uetool-base:1.3.2'
+    releaseImplementation 'com.github.eleme.UETool:uetool-no-op:1.3.2'
+
 }
 repositories {
     mavenCentral()
