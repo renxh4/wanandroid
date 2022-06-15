@@ -22,6 +22,7 @@ class RenxhPlugin implements Plugin<Project>{
     private static void checkso(Project project){
         new CheckSo().createTask(project)
         new CheckManifest().createManifestTask(project)
+        new CheckRes().createResTask(project)
     }
 
 

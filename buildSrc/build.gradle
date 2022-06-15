@@ -10,6 +10,8 @@ dependencies {
     implementation 'org.ow2.asm:asm:7.1'
     implementation 'org.ow2.asm:asm-util:7.1'
     implementation 'org.ow2.asm:asm-commons:7.1'
+    implementation 'com.tinify:tinify:1.6.4'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     runtime subprojects.collect { project(it.path) }
 
