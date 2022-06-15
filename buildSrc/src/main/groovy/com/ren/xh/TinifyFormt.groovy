@@ -7,8 +7,10 @@ import com.tinify.Tinify
 import java.nio.channels.FileChannel
 
 class TinifyFormt {
+    public static int compressSize  = 0
     void init(){
         try {
+            compressSize=0
             //测试key值的正确性
             Tinify.setKey("wQdHz6dkJhtSCt0sHwCmvQh5lpSMcyL1")
             Tinify.validate()
@@ -18,12 +20,14 @@ class TinifyFormt {
     }
 
     void commpress(String path,String outPath,String name,ArrayList<String> list){
-        Utils.printDebugmm("压缩前 size =  "+ getSize(path))
+        def qian = getSize(path)
+        Utils.printDebugmm("压缩前 size =  "+ qian)
         def tSource = Tinify.fromFile(path)
         String outname = outPath+"/"+name
         tSource.toFile(outname)
-        Utils.printDebugmm("压缩后 size =  "+ getSize(outname))
-
+        def hou = getSize(outname)
+        Utils.printDebugmm("压缩后 size =  "+ hou)
+        compressSize += qian-hou
         def file =  new File(path)
         if (file.exists()){
             file.delete()

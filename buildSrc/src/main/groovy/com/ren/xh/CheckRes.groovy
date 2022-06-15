@@ -5,7 +5,7 @@ import org.gradle.api.Project
 
 class CheckRes {
 
-     void createResTask(Project project) {
+    static void createResTask(Project project) {
         TinifyFormt tinifyFormt = new TinifyFormt()
         tinifyFormt.init()
         project.task("checkres").doFirst {
@@ -36,6 +36,8 @@ class CheckRes {
 
             def jsonResult = new Gson().toJson(compressBean)
             FileUtils.toFileContent(json, jsonResult)
+
+            Utils.printDebugmm("此次共压缩 {$TinifyFormt.compressSize}")
         }
     }
 
