@@ -5,7 +5,16 @@ import org.gradle.api.Project
 
 class CheckRes {
 
+    static def ma5List = new ArrayList<String>()
+    static def map = new HashMap<String, String>()
+    static def diffmap = new HashMap<String, String>()
+
+
+
     static void createResTask(Project project) {
+        ma5List.clear()
+        map.clear()
+        diffmap.clear()
         TinifyFormt tinifyFormt = new TinifyFormt()
         tinifyFormt.init()
         project.task("checkres").doFirst {
@@ -29,15 +38,25 @@ class CheckRes {
             if (compressBean == null) {
                 compressBean = new CompressBean()
             }
-            if (compressBean.data==null){
+            if (compressBean.data == null) {
                 compressBean.data = new ArrayList<String>()
             }
+
             eachDictory(file, tinifyFormt, outPath, compressBean.data)
 
             def jsonResult = new Gson().toJson(compressBean)
             FileUtils.toFileContent(json, jsonResult)
 
             Utils.printDebugmm("此次共压缩 {$TinifyFormt.compressSize}")
+
+            diffmap.each {
+                Utils.printDebugmm("重复文件")
+                Utils.printDebugmm(it.key)
+                Utils.printDebugmm(it.value)
+            }
+            def size = diffmap.size()
+            Utils.printDebugmm("此次共找到重复文件 {$size}")
+
         }
     }
 
@@ -47,11 +66,19 @@ class CheckRes {
                 eachDictory(it, tinifyFormt, outPath, list)
             }
         } else {
+            def md5 = FileUtils.getMD5(file.absolutePath)
+            if (ma5List.contains(md5)){
+                diffmap.put(file.absolutePath,  map.get(md5))
+            }else {
+                ma5List.add(md5)
+                map.put(md5, file.absolutePath)
+            }
+
             if (file.name.endsWith(".png")) {
                 int size = file.size() / 1024
                 if (size > 100) {
                     if (list.contains(file.absolutePath)) {
-                        Utils.printDebugmm(file.absolutePath+"  已经压缩过了")
+                        Utils.printDebugmm(file.absolutePath + "  已经压缩过了")
                     } else {
                         Utils.printDebugmm(file.absolutePath + "  size = " + size + "KB")
                         tinifyFormt.commpress(file.absolutePath, outPath, file.name, list)
