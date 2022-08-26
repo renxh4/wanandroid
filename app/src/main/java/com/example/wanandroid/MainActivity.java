@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -16,6 +17,8 @@ import com.example.wanandroid.fragment.SettingFragment;
 import com.example.wanandroid.fragment.TXFragment;
 import com.example.wanandroid.fragment.WechatFragment;
 import com.google.android.material.tabs.TabLayout;
+import com.renxh.mock.IPConfig;
+import com.renxh.mock.MockServer;
 
 import java.util.ArrayList;
 
@@ -37,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initData();
         UETool.showUETMenu();
+        MockServer.INSTANCE.init(this);
+        String localIpAddress = IPConfig.INSTANCE.getIpAddress(this);
+        Log.d("ipppppp",localIpAddress);
     }
 
     private void initData() {
@@ -88,5 +94,11 @@ public class MainActivity extends AppCompatActivity {
                 mTabLayout.addTab(tab, false);
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MockServer.INSTANCE.release();
     }
 }

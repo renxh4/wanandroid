@@ -15,9 +15,10 @@ class RXMockInterceptor : Interceptor {
         val responseLog = generateResponseLog(response)
         LogUtils.w(requestLog.plus(responseLog))
         val mediaType = response.body()!!.contentType()
-        return response.newBuilder()
-            .body(ResponseBody.create(mediaType, ""))
-            .build()
+        return response
+//        return response.newBuilder()
+//            .body(ResponseBody.create(mediaType, ""))
+//            .build()
     }
 
     private fun generateRequestLog(request: Request): String {
