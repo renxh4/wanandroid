@@ -2,6 +2,8 @@ package com.example.wanandroid.net;
 
 import android.text.TextUtils;
 
+import com.renxh.mock.RXMockInterceptor;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,8 @@ public class OkhttpManager {
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
-                .addNetworkInterceptor(httpLoggingInterceptor)
+//                .addNetworkInterceptor(httpLoggingInterceptor)
+                .addInterceptor(new RXMockInterceptor())
                 .build();
     }
 

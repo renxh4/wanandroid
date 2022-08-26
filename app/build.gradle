@@ -61,6 +61,8 @@ dependencies {
     debugImplementation 'com.github.eleme.UETool:uetool-base:1.3.2'
     releaseImplementation 'com.github.eleme.UETool:uetool-no-op:1.3.2'
 
+    implementation project(":Mock")
+
 }
 repositories {
     mavenCentral()

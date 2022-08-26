@@ -1,3 +1,4 @@
 
 rootProject.name = "wanandroid"
 include ':app'
+include ':Mock'
