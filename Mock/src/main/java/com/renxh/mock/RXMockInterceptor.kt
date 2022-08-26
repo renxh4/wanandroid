@@ -1,5 +1,6 @@
 package com.renxh.mock
 
+import com.renxh.mock.db.Api
 import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
@@ -15,6 +16,20 @@ class RXMockInterceptor : Interceptor {
         val responseLog = generateResponseLog(response)
         LogUtils.w(requestLog.plus(responseLog))
         val mediaType = response.body()!!.contentType()
+        if (MockSdk.db?.haveItem(request.url().toString())==true){
+            MockSdk?.db?.updata(Api().apply {
+                this.url = request.url().toString()
+                this.request = requestLog
+                this.response  =responseLog
+            })
+        }else{
+            MockSdk.db?.inster(Api().apply {
+                this.url = request.url().toString()
+                this.request = requestLog
+                this.response  =responseLog
+            })
+        }
+
         return response
 //        return response.newBuilder()
 //            .body(ResponseBody.create(mediaType, ""))

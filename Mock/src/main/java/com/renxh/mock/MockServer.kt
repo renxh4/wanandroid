@@ -3,6 +3,8 @@ package com.renxh.mock
 import android.content.Context
 import com.koushikdutta.async.AsyncServer
 import com.koushikdutta.async.http.server.AsyncHttpServer
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.IOException
 
 
@@ -47,12 +49,18 @@ object MockServer {
     }
 
     private fun getApi(context: Context): String {
-        val inputStream = context.resources.assets.open("xx.html")
-        val sb = StringBuffer()
-        inputStream.bufferedReader().forEachLine {
-            sb.append(it)
+        var query = MockSdk.db?.query()
+        var jsonArray = JSONArray()
+        query?.apply {
+            this.forEach {
+                var jsonObject = JSONObject()
+                jsonObject.put("url",it.url)
+//                jsonObject.put("request",it.request)
+//                jsonObject.put("response",it.response)
+                jsonArray.put(jsonObject)
+            }
         }
-        return sb.toString()
+        return jsonArray.toString()
     }
 
     fun release() {

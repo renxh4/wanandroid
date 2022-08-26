@@ -2,6 +2,8 @@ package com.example.wanandroid;
 
 import android.app.Application;
 
+import com.renxh.mock.MockSdk;
+
 public class App extends Application {
     private static App sApplication;
 
@@ -9,6 +11,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         sApplication = this;
+        MockSdk.INSTANCE.init(this);
     }
 
     public static Application getApplication() {
