@@ -10,7 +10,7 @@
             float:left;
             list-style: none;
         }
-       #filelist div{
+       #filelist .showHide{
             margin: 3px 0;
             line-height: 30px;
             white-space: pre-line;
@@ -19,21 +19,44 @@
             border: 1px solid #ddd;
             padding: 10px;
         }
+        #filelist .pbox{
+            background: aquamarine;
+            margin: 10px 0;
+            padding: 0 15px;
+        }
+        #filelist .pbox p {
+            display:inline-block;
+        }
+        .check{
+            margin-left:25px;
+            float: right;
+        }
     </style>
     <script type="text/javascript">
         $(function() {
             let now = new Date();
             let url = 'mock';
-            $.getJSON(url, function(data) {
+            $.getJSON(url,{name:1} ,function(data) {
                 for (var i = 0; i < data.length; i++) {
+                    let $PBox = $('<div class="pbox"></div>');
                     let $p = $('<p>' + data[i].url + '</p>');
-                    let $div = $('<div style="display:none">' + data[i].response + '</div>');
+                    let $div = $('<div class="showHide" style="display:none">' + data[i].response + '</div>');
+                    let $check = $('<p class="check">'+'<input type="checkbox" id="check1">'+'开启mock服务</P>');
                     $p.attr("path", data[i].path);
-                    $("#filelist").append($p);
+                    $("#filelist").append($PBox);
+                    $($PBox).append($p);
+                    $PBox.append($check);
                     $("#filelist").append($div);
                     $p.click(() => {
-                      $p.next().slideToggle();
-                    })
+                      $PBox.next().slideToggle();
+                    });
+                    $check.click(()=>{
+                        let path = $check.prev().html();
+                        let flag = $check.children().eq(0).is(':checked') ? '1' :'0';
+                        $.getJSON('mockopen' ,{url:path,open:flag},function(data) {
+                            console.log(data,"j结果");
+                        });
+                    });
                 }
             });
         });

@@ -16,24 +16,27 @@ class RXMockInterceptor : Interceptor {
         val responseLog = generateResponseLog(response)
         LogUtils.w(requestLog.plus(responseLog))
         val mediaType = response.body()!!.contentType()
-        if (MockSdk.db?.haveItem(request.url().toString())==true){
-            MockSdk?.db?.updata(Api().apply {
-                this.url = request.url().toString()
-                this.request = requestLog
-                this.response  =responseLog
-            })
-        }else{
+        var queryItem = MockSdk.db?.queryItem(request.url().toString())
+        if (queryItem != null && queryItem.size > 0) {
+            var api = queryItem.get(0)
+            if (api.mockopen.equals("1")) {
+                return response.newBuilder()
+                    .body(ResponseBody.create(mediaType, api.mockresponse))
+                    .build()
+            } else {
+                return response
+            }
+        } else {
             MockSdk.db?.inster(Api().apply {
                 this.url = request.url().toString()
                 this.request = requestLog
-                this.response  =responseLog
+                this.response = responseLog
+                this.mockopen = "0"
             })
         }
 
         return response
-//        return response.newBuilder()
-//            .body(ResponseBody.create(mediaType, ""))
-//            .build()
+
     }
 
     private fun generateRequestLog(request: Request): String {
@@ -72,7 +75,8 @@ class RXMockInterceptor : Interceptor {
                 ?: Charset.forName("UTF-8")
             if (contentLength().toInt() != 0) {
                 buffer.clone().readString(charset).let { result ->
-                    stringBuffer.append("respose body  = ").append(JsonUtil.formatJson(result)).append("\r\n")
+                    stringBuffer.append("respose body  = ").append(JsonUtil.formatJson(result))
+                        .append("\r\n")
                 }
             }
         }

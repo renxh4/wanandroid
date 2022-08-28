@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // 创建数据库1张表
         // 通过execSQL（）执行SQL语句（此处创建了1个名为person的表）
-        String sql = "create table api(id integer primary key autoincrement,url varchar(64),request varchar(64),response varchar(64))";
+        String sql = "create table api(id integer primary key autoincrement,url varchar(64),request varchar(64),response varchar(64),mockresponse varchar(64),openmock varchar(64))";
         db.execSQL(sql);
 
         // 注：数据库实际上是没被创建 / 打开的（因该方法还没调用）
