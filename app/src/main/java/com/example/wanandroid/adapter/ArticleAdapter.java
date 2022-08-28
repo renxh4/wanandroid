@@ -25,7 +25,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
     private final Context mContext;
-    private ArrayList<ArticleData> mDatas;
+    private ArrayList<ArticleData> mDatas = new ArrayList<>();
 
     private final int HEADER = 0;
     private final int NORMALE = 1;
@@ -34,7 +34,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public ArticleAdapter(Context context) {
         this.mContext = context;
-        mDatas = new ArrayList<>();
     }
 
     @NonNull
