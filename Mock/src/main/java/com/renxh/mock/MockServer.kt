@@ -87,7 +87,9 @@ object MockServer {
                 jsonObject.put("url",it.url)
 //                jsonObject.put("request",it.request)
                 jsonObject.put("response",it.response)
-                jsonObject.put("mockopen",it.mockopen)
+                jsonObject.put("mockopen",it.mockopen?:"0")
+                jsonObject.put("mockresponse",it.mockresponse?:"")
+
                 jsonArray.put(jsonObject)
             }
         }

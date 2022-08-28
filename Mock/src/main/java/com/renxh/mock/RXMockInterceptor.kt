@@ -18,14 +18,14 @@ class RXMockInterceptor : Interceptor {
         val mediaType = response.body()!!.contentType()
         var queryItem = MockSdk.db?.queryItem(request.url().toString())
         if (queryItem != null && queryItem.size > 0) {
-            var api = queryItem.get(0)
-            if (api.mockopen.equals("1")) {
-                return response.newBuilder()
-                    .body(ResponseBody.create(mediaType, api.mockresponse))
-                    .build()
-            } else {
-                return response
-            }
+//            var api = queryItem.get(0)
+//            if (api.mockopen.equals("1")) {
+//                return response.newBuilder()
+//                    .body(ResponseBody.create(mediaType, api.mockresponse))
+//                    .build()
+//            } else {
+//                return response
+//            }
         } else {
             MockSdk.db?.inster(Api().apply {
                 this.url = request.url().toString()

@@ -159,7 +159,7 @@ public class DbUtils {
     }
 
     public ArrayList<Api> query() {
-        Cursor cursor = sqliteDatabase.query(tableName, new String[]{urlKey, requestKey, responseKey},
+        Cursor cursor = sqliteDatabase.query(tableName, new String[]{urlKey, requestKey, responseKey,mockresponse,openmock},
                 null, null, null, null, null);
 
         ArrayList<Api> apis = new ArrayList<>();
@@ -169,6 +169,9 @@ public class DbUtils {
             api.url = cursor.getString(0);
             api.request = cursor.getString(1);
             api.response = cursor.getString(2);
+            api.mockresponse = cursor.getString(3);
+            api.mockopen = cursor.getString(4);
+
             // do something useful with these
             cursor.moveToNext();
             apis.add(api);
