@@ -40,7 +40,7 @@ object MockServer {
 
 
     private fun getIndexContent(context: Context): String {
-        val inputStream = context.resources.assets.open("xx.html")
+        val inputStream = context.resources.assets.open("pp.html")
         val sb = StringBuffer()
         inputStream.bufferedReader().forEachLine {
             sb.append(it)
@@ -56,7 +56,7 @@ object MockServer {
                 var jsonObject = JSONObject()
                 jsonObject.put("url",it.url)
 //                jsonObject.put("request",it.request)
-//                jsonObject.put("response",it.response)
+                jsonObject.put("response",it.response)
                 jsonArray.put(jsonObject)
             }
         }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+
+    <title>文档的标题</title>
+    <style>
+        #filelist{
+            float:left;
+            list-style: none;
+        }
+       #filelist div{
+            margin: 3px 0;
+            line-height: 30px;
+            white-space: pre-line;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+    </style>
+    <script type="text/javascript">
+        $(function() {
+            let now = new Date();
+            let url = 'mock';
+            $.getJSON(url, function(data) {
+                for (var i = 0; i < data.length; i++) {
+                    let $p = $('<p>' + data[i].url + '</p>');
+                    let $div = $('<div style="display:none">' + data[i].response + '</div>');
+                    $p.attr("path", data[i].path);
+                    $("#filelist").append($p);
+                    $("#filelist").append($div);
+                    $p.click(() => {
+                      $p.next().slideToggle();
+                    })
+                }
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+<div id="filelist"></div>
+
+</body>
+
+</html>
