@@ -22,8 +22,6 @@ import com.renxh.mock.MockServer;
 
 import java.util.ArrayList;
 
-import me.ele.uetool.UETool;
-
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
@@ -39,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
-        UETool.showUETMenu();
         MockServer.INSTANCE.init(this);
         String localIpAddress = IPConfig.INSTANCE.getIpAddress(this);
         Log.d("ipppppp",localIpAddress);
