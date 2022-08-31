@@ -37,9 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
-        MockServer.INSTANCE.init(this);
-        String localIpAddress = IPConfig.INSTANCE.getIpAddress(this);
-        Log.d("ipppppp",localIpAddress);
     }
 
     private void initData() {
