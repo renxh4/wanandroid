@@ -55,10 +55,10 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    implementation "io.githunb.renxh4:mock:0.0.2"
+//    implementation "io.githunb.renxh4:mock:0.0.2"
 
 
-//    implementation project(":Mock")
+    implementation project(":Mock")
 
 }
 repositories {

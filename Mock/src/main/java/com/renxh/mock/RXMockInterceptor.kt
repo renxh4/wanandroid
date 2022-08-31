@@ -21,6 +21,7 @@ class RXMockInterceptor : Interceptor {
             var api = queryItem.get(0)
             if (api.mockopen.equals("1")) {
                 return response.newBuilder()
+                    .code(200)
                     .body(ResponseBody.create(mediaType, api.mockresponse))
                     .build()
             } else {
