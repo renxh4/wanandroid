@@ -18,6 +18,7 @@ import com.example.wanandroid.fragment.TXFragment;
 import com.example.wanandroid.fragment.WechatFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.renxh.mock.IPConfig;
+import com.renxh.mock.MockSdk;
 import com.renxh.mock.MockServer;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
+        MockSdk.INSTANCE.init(this);
+
     }
 
     private void initData() {
