@@ -1,10 +1,14 @@
 package com.example.wanandroid.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -49,6 +53,7 @@ public class SettingFragment extends Fragment {
     private Button yijing;
     private RecyclerView recyclerView1;
     private TimeAdapter articleAdapter;
+    private EditText editText;
 
 
     public SettingFragment(String text){
@@ -75,6 +80,10 @@ public class SettingFragment extends Fragment {
     }
 
     private void refresh() {
+        String edit = SharePerferenceUtils.getString(requireContext(), "edit", "");
+        if (StringUtils.isNotEmpty(edit)){
+            editText.setText(edit);
+        }
         String mubiao = SharePerferenceUtils.getString(requireContext(), "mubiao", "");
         if (StringUtils.isNotEmpty(mubiao)){
             TimeBean timeBean = new Gson().fromJson(mubiao, TimeBean.class);
@@ -94,6 +103,19 @@ public class SettingFragment extends Fragment {
     }
 
     private void initView(View view) {
+        editText = view.findViewById(R.id.setting_jianchi_text);
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND || actionId == EditorInfo.IME_ACTION_DONE) {
+                    String keyWord = editText.getText().toString().trim();
+                    SharePerferenceUtils.putString(requireContext(),"edit",keyWord);
+                    hideInputMethod();
+                    return true;
+                }
+                return false;
+            }
+        });
         recyclerView = view.findViewById(R.id.recycle);
         //设置布局管理器
         CustomLinearLayoutManager layoutManager = new CustomLinearLayoutManager(getContext());
@@ -150,6 +172,10 @@ public class SettingFragment extends Fragment {
 
             }
         });
+    }
+
+    public void hideInputMethod() {
+        ((InputMethodManager)requireContext().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(requireActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     public void toSp(String time){
