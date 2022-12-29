@@ -12,14 +12,25 @@
         android:text="dhajdha"/>
 
     <TextView
+        android:layout_toLeftOf="@+id/delete"
         android:layout_marginRight="20dp"
-        android:layout_alignParentRight="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:id="@+id/pretime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dhajdha"/>
+
+    <TextView
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="删除"/>
+
 
 
 </RelativeLayout>
