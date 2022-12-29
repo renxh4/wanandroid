@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
-        MockSdk.INSTANCE.init(this);
+//        MockSdk.INSTANCE.init(this);
 
     }
 
