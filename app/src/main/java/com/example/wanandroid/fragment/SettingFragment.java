@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,18 +18,38 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.wanandroid.R;
+import com.example.wanandroid.Utils;
 import com.example.wanandroid.activity.VideoActivity;
 import com.example.wanandroid.activity.Webview2Activity;
 import com.example.wanandroid.adapter.ArticleAdapter;
 import com.example.wanandroid.adapter.CustomLinearLayoutManager;
 import com.example.wanandroid.adapter.QuestionAdapter;
 import com.example.wanandroid.adapter.SpaceItemDecoration;
+import com.example.wanandroid.adapter.TimeAdapter;
+import com.example.wanandroid.bean.TimeBean;
+import com.example.wanandroid.utils.SharePerferenceUtils;
+import com.example.wanandroid.utils.StringUtils;
+import com.google.gson.Gson;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class SettingFragment extends Fragment {
 
     private final String mText;
     private RecyclerView recyclerView;
     private int a = 2031645;
+    private boolean show = false;
+    private DatePicker dp_test;
+    private TextView shiji;
+    private Button yijing;
+    private RecyclerView recyclerView1;
+    private TimeAdapter articleAdapter;
+
 
     public SettingFragment(String text){
         this.mText = text;
@@ -45,46 +67,107 @@ public class SettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         initView(view);
+        initData();
+    }
+
+    private void initData() {
+        refresh();
+    }
+
+    private void refresh() {
+        String mubiao = SharePerferenceUtils.getString(requireContext(), "mubiao", "");
+        if (StringUtils.isNotEmpty(mubiao)){
+            TimeBean timeBean = new Gson().fromJson(mubiao, TimeBean.class);
+            ArrayList<String> data = timeBean.data;
+            articleAdapter.setData(data);
+            if (data.size()>0){
+                String strDateFormat = "yyyy-MM-dd";
+                SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+                String format = sdf.format(new Date(Long.valueOf(timeBean.data.get(0))));
+                shiji.setText("上次完成时间"+format);
+
+                long during = System.currentTimeMillis() - Long.valueOf(data.get(0)) ;
+                int day = (int) (during/(1000*60*60*24));
+                yijing.setText("距上次"+day+"天时间");
+            }
+        }
     }
 
     private void initView(View view) {
-        EditText editText = view.findViewById(R.id.edit);
-        Button button = view.findViewById(R.id.search);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        recyclerView = view.findViewById(R.id.recycle);
+        //设置布局管理器
+        CustomLinearLayoutManager layoutManager = new CustomLinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        articleAdapter = new TimeAdapter(requireContext());
+        //设置Adapter
+        recyclerView.setAdapter(articleAdapter);
+        //设置分隔线
+        recyclerView.addItemDecoration(new SpaceItemDecoration(getContext()));
+        //设置增加或删除条目的动画
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        yijing = view.findViewById(R.id.setting_yijing);
+        shiji = view.findViewById(R.id.setting_wancheng_text);
+        view.findViewById(R.id.setting_wancheng).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                //https://hj3f23.com/
-                String trim = editText.getText().toString().trim();
-                if (trim.equals("adhu")){
-                    trim = "https://hj3f23.com/";
+            public void onClick(View v) {
+                if (show){
+                    dp_test.setVisibility(View.GONE);
+                }else {
+                    dp_test.setVisibility(View.VISIBLE);
                 }
-                Webview2Activity.start(getContext(),trim);
+                show = !show;
             }
         });
-
-        view.findViewById(R.id.search_mp4).setOnClickListener(new View.OnClickListener() {
+        dp_test = (DatePicker) view.findViewById(R.id.datepicker);
+        Calendar calendar = Calendar.getInstance();
+        int year=calendar.get(Calendar.YEAR);
+        int monthOfYear=calendar.get(Calendar.MONTH);
+        int dayOfMonth=calendar.get(Calendar.DAY_OF_MONTH);
+        dp_test.init(year, monthOfYear, dayOfMonth, new DatePicker.OnDateChangedListener() {
             @Override
-            public void onClick(View view) {
-                //https://test.aofahairextension.com/hjstore/video/20220605/e0812678bb965b3cd41040446e76a248/2031645_i.m3u8
-                String url = "https://test.aofahairextension.com/hjstore/video/20220605/e0812678bb965b3cd41040446e76a248/%s_i.m3u8";
-                Log.d("mmm a == ", a+"/");
-                String format = String.format(url, a);
-                String trim = editText.getText().toString().trim();
-                if (trim.equals("adhu")){
-                    trim = format;
-                }
-                editText.setText(trim);
-                VideoActivity.startMe(getContext(),trim);
-            }
-        });
+            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Utils.executeOnMainThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(requireContext(),"您选择的日期是："+year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日!",Toast.LENGTH_SHORT).show();
+                        String time  = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+                        shiji.setText(time);
+                        String strDateFormat = "yyyy-MM-dd";
+                        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+                        try {
+                            Date parse = sdf.parse(time);
+                            long time1 = parse.getTime();
+                            toSp(String.valueOf(time1));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        dp_test.setVisibility(View.GONE);
+                        show = false;
+                        refresh();
 
-        view.findViewById(R.id.search_mp41).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editText.setText("");
+                    }
+                });
+
             }
         });
+    }
+
+    public void toSp(String time){
+        String mubiao = SharePerferenceUtils.getString(requireContext(), "mubiao", "");
+        if (StringUtils.isNotEmpty(mubiao)){
+            TimeBean timeBean = new Gson().fromJson(mubiao, TimeBean.class);
+            ArrayList<String> data = timeBean.data;
+            data.add(0,time);
+            String s = new Gson().toJson(timeBean);
+            SharePerferenceUtils.putString(requireContext(),"mubiao",s);
+        }else {
+            TimeBean timeBean = new TimeBean();
+            ArrayList<String> strings = new ArrayList<>();
+            strings.add(time);
+            timeBean.data  = strings;
+            String s = new Gson().toJson(timeBean);
+            SharePerferenceUtils.putString(requireContext(),"mubiao",s);
+        }
     }
 
 }

@@ -3,36 +3,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
+        android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edit"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <Button
-        android:id="@+id/search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="搜索"/>
-
-        <Button
-            android:id="@+id/search_mp4"
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="播放视频"/>
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:text="战胜它就战胜了疾病"/>
 
-        <Button
-            android:id="@+id/search_mp41"
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/setting_jianchi_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="清空"/>
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:text="一定坚持天数15天"/>
+
+
+
+        <Button
+            android:id="@+id/setting_wancheng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置实际完成时间"/>
+
+        <DatePicker
+            android:id="@+id/datepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/setting_wancheng_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成时间"/>
+
+        <Button
+            android:id="@+id/setting_yijing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已经坚持了5天"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="时间记录"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+
 
     </LinearLayout>
+
 
 </RelativeLayout>
