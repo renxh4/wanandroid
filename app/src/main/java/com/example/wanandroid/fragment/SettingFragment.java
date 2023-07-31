@@ -1,7 +1,12 @@
 package com.example.wanandroid.fragment;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -54,6 +59,7 @@ public class SettingFragment extends Fragment {
     private RecyclerView recyclerView1;
     private TimeAdapter articleAdapter;
     private EditText editText;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
 
     public SettingFragment(String text){
@@ -196,4 +202,26 @@ public class SettingFragment extends Fragment {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    open();
+                }
+            },1000);
+        }
+    }
+
+    private void open() {
+        String package_name="com.yunlian.meditationmode";
+        String activity_path = "com.yunlian.meditationmode.act.MainActDing";
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//可选
+        ComponentName comp = new ComponentName(package_name,activity_path);
+        intent.setComponent(comp);
+        startActivity(intent);
+    }
 }
