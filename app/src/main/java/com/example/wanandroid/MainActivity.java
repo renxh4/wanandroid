@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.wanandroid.activity.TestBean;
 import com.example.wanandroid.fragment.HomeFragment;
 import com.example.wanandroid.fragment.QuestionFragment;
 import com.example.wanandroid.fragment.SettingFragment;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         initData();
+        TestBean testBean = new TestBean("");
 //        MockSdk.INSTANCE.init(this);
 
     }

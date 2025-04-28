@@ -209,7 +209,7 @@ public class SettingFragment extends Fragment {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    open();
+//                    open();
                 }
             },1000);
         }
