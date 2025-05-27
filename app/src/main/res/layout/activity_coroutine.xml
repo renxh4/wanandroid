@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="协成"/>
+        android:text="点我"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

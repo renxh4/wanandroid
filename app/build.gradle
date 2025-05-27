@@ -1,8 +1,8 @@
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.ren.xh.plugin'
-apply plugin: 'com.ren.xh.thread'
+//apply plugin: 'com.ren.xh.plugin'
+//apply plugin: 'com.ren.xh.thread'
 
 
 
