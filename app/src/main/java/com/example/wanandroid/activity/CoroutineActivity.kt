@@ -2,11 +2,14 @@ package com.example.wanandroid.activity
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.wanandroid.R
 import com.example.wanandroid.databinding.ActivityCoroutineBinding
 import com.example.wanandroid.databinding.ActivityVideoBinding
 import com.example.wanandroid.test.Activity
+import com.example.wanandroid.test.FlowViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +28,9 @@ import kotlinx.coroutines.supervisorScope
 import kotlin.system.measureTimeMillis
 
 class CoroutineActivity : AppCompatActivity() {
+
+    private val mainViewModel by viewModels<FlowViewModel>()
+
     lateinit var binding : ActivityCoroutineBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +38,11 @@ class CoroutineActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.button.setOnClickListener {
-                main8()
+            lifecycleScope.launch{
+                mainViewModel.timeFlow.collect{
+                    Log.d("mmm",it.toString())
+                }
+            }
         }
     }
 
@@ -93,19 +103,19 @@ class CoroutineActivity : AppCompatActivity() {
             log("Task from runBlocking")
         }
         supervisorScope {
-                launch {
-                    try {
+            launch {
+                try {
                     delay(500)
                     log("Task throw Exception")
                     throw Exception("failed")
                 }catch (e: Exception){
 
                 }
-                }
-                launch {
-                    delay(600)
-                    log("Task from nested launch")
-                }
+            }
+            launch {
+                delay(600)
+                log("Task from nested launch")
+            }
 
 
         }
