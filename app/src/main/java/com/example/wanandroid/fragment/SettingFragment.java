@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -109,6 +110,15 @@ public class SettingFragment extends Fragment {
     }
 
     private void initView(View view) {
+        view.findViewById(R.id.setting_chanding).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                startActivity(intent);
+            }
+        });
+
         editText = view.findViewById(R.id.setting_jianchi_text);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

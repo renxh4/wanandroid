@@ -3,4 +3,6 @@
 
     <string name="new_fresh">新</string>
     <string name="top_tip">置顶</string>
+    <string name="accessibility_service_description">sa</string>
+
 </resources>

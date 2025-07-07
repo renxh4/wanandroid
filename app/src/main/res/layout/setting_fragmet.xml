@@ -10,6 +10,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/setting_chanding"
             android:layout_marginTop="20dp"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
@@ -17,7 +18,7 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="25sp"
-            android:text="战胜它就战胜了疾病"/>
+            android:text="禅定"/>
 
         <EditText
             android:gravity="center_horizontal"
