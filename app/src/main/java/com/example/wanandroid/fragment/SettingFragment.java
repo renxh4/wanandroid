@@ -1,5 +1,6 @@
 package com.example.wanandroid.fragment;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -46,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class SettingFragment extends Fragment {
@@ -233,5 +236,24 @@ public class SettingFragment extends Fragment {
         ComponentName comp = new ComponentName(package_name,activity_path);
         intent.setComponent(comp);
         startActivity(intent);
+    }
+
+
+    /**
+     * 判断无障碍服务是否开启
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isStartAccessibilityServiceEnable(Context context) {
+        AccessibilityManager accessibilityManager = (AccessibilityManager)context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+        assert accessibilityManager != null;
+        List<AccessibilityServiceInfo> accessibilityServices = accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK);
+        for (AccessibilityServiceInfo info : accessibilityServices) {
+            if (info.getId().contains(context.getPackageName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

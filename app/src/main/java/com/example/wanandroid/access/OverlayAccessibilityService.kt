@@ -10,28 +10,17 @@ import android.widget.FrameLayout
 import android.view.Gravity
 import android.widget.TextView
 import android.os.CountDownTimer
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 
 class OverlayAccessibilityService : AccessibilityService() {
     private var overlayView: View? = null
     private var windowManager: WindowManager? = null
     private var countDownTimer: CountDownTimer? = null
-    private var showOverlayReceiver: BroadcastReceiver? = null
 
     override fun onCreate() {
         super.onCreate()
-        // 注册广播接收器
-        val filter = IntentFilter("com.example.wanandroid.SHOW_OVERLAY")
-        showOverlayReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                showOverlay()
-            }
-        }
-        registerReceiver(showOverlayReceiver, filter)
     }
+
+
 
     override fun onServiceConnected() {
         showOverlay()
@@ -44,8 +33,6 @@ class OverlayAccessibilityService : AccessibilityService() {
 
     override fun onDestroy() {
         // 注销广播接收器
-        showOverlayReceiver?.let { unregisterReceiver(it) }
-        showOverlayReceiver = null
         removeOverlay()
         super.onDestroy()
     }
